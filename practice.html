@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+
+
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!--
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+-->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+<title>pSCT</title>
+<!--
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"> 
+</script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+-->
+<!-- me -->
+<script type="text/javascript" src="./static/jquery-latest.js"></script>
+
+<script type="text/javascript" src="./static/Plotly.js"></script>
+
+<script type="text/javascript" src="./static/Add_item.js"></script>
+
+<script>
+        var times = {{times|tojson}} 
+        var event_count = {{event_count|tojson}}
+        var sliding_average = {{sliding_average|tojson}}
+        var run_number = {{run_number|tojson}}
+        var source = {{source|tojson}}
+        var date = {{date|tojson}}
+        var time = {{time|tojson}}
+ </script>
+    
+
+<style type="text/css">
+.container
+{
+	position: relative;
+}
+/*.topbar{
+	background-color: white;
+padding: 3%;
+	 margin-bottom: 2%;
+color: slategrey;
+}
+*/
+.row{
+	margin-bottom: 1%;
+}
+.blue{
+color: #00204e;;
+}
+#hi
+{
+color: blue;
+}
+.sliding_average
+{
+	position: absolute;
+	top: 250px;
+	right: 250px;
+	font-size: 18px;
+}
+#average
+{
+	position: absolute;
+	z-index: 1;
+	right: 100px;
+	top: 50px;
+}
+.nav_entry
+{
+	padding-left: 5px;
+	/*font: sans-serif;*/
+}
+.save
+{
+	background-color: black;
+	color: white;
+	/*color: grey;*/
+	/*border-color: red;*/
+	position: absolute;
+	right: 20px;
+	bottom: 10px;
+	font-family: 'Fira Sans', sans-serif;
+    font-weight: 400;
+	/*font-size: 20px;
+	font-style: serif;
+	font-weight: bold;*/
+}
+.navbar
+{
+	font-size: 16px;
+	font-family: 'Fira Sans', sans-serif;
+    font-weight: 400;
+    background-color: #00204e;
+}
+#title
+{
+	color: #7E7892;
+	outline-color: #fff;
+	font-size: 16px;
+	/*padding-bottom: 20px;
+	padding-left: 10px;*/
+	/*font-weight: bold;*/
+}
+.nav-link
+{
+	padding-left: 50px;
+	font-family: 'Fira Sans', sans-serif;
+    font-weight: 400;
+    border-color: #fff;
+}
+.nav_heads
+{
+	padding-left: 10px;
+	font-weight: bolder;
+	color: #7E7892;
+	outline: white;
+	font-family: 'Fira Sans', sans-serif;
+    font-weight: 400;
+}
+.box_size_1
+{
+	border: thick;
+	padding-right: 20%;
+	background-color: wheat;
+}
+#container
+{
+	font-family: 'Fira Sans', sans-serif;
+    font-weight: 400;
+    background-color: #00204e;
+}
+.yours
+{
+	color: #fff;
+}
+.box_1
+{
+	padding-bottom: 400px;
+}
+.bottom_row
+{
+	padding-top: -20px;
+}
+#section_title
+{
+	padding-left: 30px;
+	font-size: 25px;
+}
+.pulse
+{
+	padding-left: 70px;
+	padding-right: 70px
+}
+.charge
+{
+	padding-left: 20px;
+	padding-right: 20px;
+}
+.mode-title
+{
+	/*right: 30px;*/
+	font-size: 20px;
+	color:lightgrey;
+	padding-left: 7px;
+	font-style: font-family: 'Fira Sans', serif;
+	outline-color: #7E7892;
+	outline-style: double;
+	background-color:#00204e;	
+}
+.modes
+{
+	font-size: 14px;
+	bottom: -10px;
+	padding-right: 40px;
+	color:#7E7892;
+	
+}
+.event-butt
+{
+	padding-right: 15px;
+}
+</style>
+<link rel="shortcut icon" href="#" />
+
+</head
+<body>
+<div id = "container">
+<nav class="navbar navbar-expand-lg ">
+<a class="navbar-brand" href="#"><span id = "title" > PSCT Quicklook: Home </span> </a>
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<span class="navbar-toggler-icon"></span>
+</button>
+
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+<ul class="navbar-nav mr-auto">
+<li class="nav-item">
+<li class="nav-item active">
+<a class="nav-link yours" href="#"> <span class = "nav_heads"> Date: </span> <span class = "nav_entry">{{date}} </span><span class="sr-only">(current)</span></a> 
+</li>
+<li class="nav-item active">
+<a class="nav-link yours" href="#"> <span class = "nav_heads"> Time: </span> <class = "nav_entry"> {{time}} </class> <span class="sr-only">(current)</span></a> 
+</li>
+<li class="nav-item active">
+<a class="nav-link yours" href="#"> <span class = "nav_heads"> Run #: </span> <span class = "nav_entry"> {{run_number}} </span><span class="sr-only">(current)</span></a> 
+</li>
+<li class="nav-item active">
+<a class="nav-link yours" href="#"> <span class = "nav_heads"> Source: </span> <span class = "nav_entry"> {{source}} </span><span class="sr-only">(current)</span></a> 
+</li>
+<button class = "btn btn-outline-danger save"> Save Event</button>
+
+
+</li>
+</ul>
+</div>
+</nav>
+
+
+<!-- div class= "row title"> Quicklook pSCT</div>
+<div id = "nav_bar">
+<span class = "nav_bar_item">
+	<span class = "nav_heads"> Date: </span> <span class = "nav_entry">{{date}} </span>
+</span>
+<span class = "nav_bar_item">
+	<span class = "nav_heads"> Time: </span> <span class = "nav_entry">{{time}} </span>
+</span>
+<span class = "nav_bar_item">
+	<span class = "nav_heads"> Run #: </span> <span class = "nav_entry">{{run_number}} </span>
+</span>
+<span class = "nav_bar_item">
+	<span class = "nav_heads"> Source: </span> <span class = "nav_entry">{{source}} </span>
+</span> -->
+<!-- <button id = "save"> 
+	 Save 
+</button> -->
+<!-- <input type="button" id = "save" value="Save"  onclick="play()">
+<audio id="audio" src="https://www.nasa.gov/mp3/640148main_APU%20Shutdown.mp3" ></audio>
+</div> -->
+<!-- 
+style="width:1200px;height:500px;" -->
+
+<!-- top row -->
+<div class="row top_row" style = "background-color: white" >
+	<div class = "col-3 box_1" style="border: 2px solid black">
+	 camera view 
+	 <!-- 
+	 <iframe  height="345"  src="https://www.youtube.com/embed/BmFCdhoS1SE">
+</iframe> -->
+
+	</div>
+	<div class = "col-3 box_1" style="border: 2px solid black">
+	 zoom 1
+<!-- 
+	  <h3> 5 x 5 grid </h3>
+	  <h1> backplane </h2>  -->
+	</div>	
+	<div class = "col-3 box_1" style="border: 2px solid black">
+	 zoom 2
+
+	 <!-- <h3> 8 x 8 grid</h3>
+	 <h1> module </h1>  -->
+	</div>
+	<div class = "col-3 box_1" style="border: 2px solid black">
+	 <div class = "row buttons"> 
+	 	
+	 		<button class = "two pulse"> Pulse </button>
+	 	
+	 	
+	 		<button class = "two charge"> Charge Distribution </button>
+	 	
+	 </div>
+	</div>
+</div>
+
+<!-- bottom row -->
+<div class = "row bottom_row" style = "background-color: white">
+	<div class="col-6 Trigger_rate" style="border: 2px solid black"> 
+		<div class = "row">
+			<span id = "section_title"> Trigger Rate </span> <span id = "average"> Sliding Average: {{sliding_average}}</span> 
+		</div>
+		<div class = "row">
+			<div class = "col-1 modes">
+				<span class = "mode-title" >Mode</span>
+				<button class = "event-butt"> Event </button>
+				<button class = "trig-butt">Trigger Rate</button>
+			</div>
+			<div class = "col-11">
+				<div id="tester" > </div>
+			</div>
+	</div>
+	</div>
+	<div class="col-3" style="border: 2px solid black"> tbd</div>
+	<div class="col-3" style="border: 2px solid black">tbd</div>
+</div>
+	
+
+
+<!-- <div class="topbar">
+<h1>Trigger Rate</h1>
+</div> -->
+
+
+<!-- <div id="tester" style="width:1200px;height:500px;"></div>
+</div> -->
+
+</html>
+</body
