@@ -7,20 +7,6 @@
  double My_variable = 3.0;
  
 void modifyArray(int sizex, int sizey, double *npyArray2D) {
-    /*for (int i=0; i<sizex; i++) {
-  	for (int j=0; j<sizey; j++) {
-  		int n=i*sizey+j;
-
-  		npyArray2D[n] = i*j;
-  	}
-  }*/
-/*    for(int i=0; i<sizey; i++){
-	npyArray2D[i]=5;
-}
-    for( int k=sizey; k < sizey*sizex+1; k++)
-	{
-		npyArray2D[k]=6;
-	}*/
     char *file_name = "FirstLight.fits";    
     // this is the pointer to the fits file
     fitsfile *fptr;      /* FITS file pointer, defined in fitsio.h */
@@ -82,7 +68,7 @@ void modifyArray(int sizex, int sizey, double *npyArray2D) {
         int final=1;
 	int start_time;
         //iterate down all rows
-
+	char *string;
 
         for (jj = 1; jj <= nrows && !status; jj++) {
 
@@ -103,22 +89,26 @@ void modifyArray(int sizex, int sizey, double *npyArray2D) {
                         }
                         else if(count == 0)
                         {
-                                //happens on first instance of a time
-                                printf("%d\n", atoi(value));
+                                //happens on first instance of first time
+                                start_time = atoi(value);
+				printf("%d\n", atoi(value));
+				//itoa
+				
                                 strcpy(time1, value);
                                 count++;
                         }
                         else if(strcmp(value, time1)==0)
                         {
+				//printf("PRINTING START TIME%d\n", start_time);
                                 count++;
                                 final = count;
                         }
                         else
                         {
                                 //array_ids[entry_index]=atoi(time1);
-        			npyArray2D[entry_index]=atoi(time1);
+        			npyArray2D[entry_index]=atoi(time1)-start_time;
 
-				npyArray2D[1000+entry_index] = count;
+				npyArray2D[1000+entry_index] = final;
 				entry_index++;
                                 count = 1;
                                 strcpy(time1,value);
@@ -127,15 +117,15 @@ void modifyArray(int sizex, int sizey, double *npyArray2D) {
                 }
 //          }
 
-	 array_count[1000+entry_index] = final;
-        array_ids[entry_index]=atoi(time1);
+	 npyArray2D[1000+entry_index] = final;
+         npyArray2D[entry_index]=atoi(time1)-start_time;
       }//close else?
-/*        int iiii=0;
-       while(array_count[iiii])
+       int iiii=0;
+       while(npyArray2D[iiii])
        {
-//           printf(" %d, ",array_count[iiii++]);
+           printf(" %d, ",array_count[iiii++]);
        }
-        iiii=0;
+/*        iiii=0;
        while(array_ids[iiii])
        {
  //         printf(" %d, ",array_ids[iiii++]);
